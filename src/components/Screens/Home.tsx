@@ -7,20 +7,26 @@ function Home() {
 
     const [ value, setValue ] = useState("");
     const [ searchTerm, setSearchTerm ] = useState("");
+    const [drugName, setDrugName] = useState(null);
+
     const [ drugInfo, setDrugInfo ] = useState(null);
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         setSearchTerm(value);
+        setDrugName(searchTerm);
         grabPres(searchTerm);
         console.log(drugInfo);
     }
 
     async function grabPres(drug:string) {
         await axios
-            .get(`https://api.fda.gov/drug/drugsfda.json?search=products.brand_name:${drug}&limit=1`)
+            .get(`https://api.fda.gov/drug/event.json?search=patient.drug.openfda.brand_name:${drug}&limit=1`)
+            
+
             .then((response) => {
                 setDrugInfo(response.data);
+                console.log(drugInfo);
                 return response;
             });
     }
@@ -37,9 +43,16 @@ function Home() {
             
             {drugInfo ? (
                 <div>
-                    <p>{drugInfo.results[0].sponsor_name}</p>
+                    <h2>Drug Name: {drugName}</h2>
+                    <p>Side Effects</p>
+                    <ul>
+                        { drugInfo.results[0].patient.reaction.map((item:any, i:number) => (
+                            <li key={i}> {item.reactionmeddrapt} </li>
+                        ))}
+                    </ul>
+                    {/* <p>{drugInfo.results[0].patient.reaction}</p>
                     <p>{drugInfo.results[0].products[0].dosage_form}</p>
-                    <p>{drugInfo.results[0].products[0].brand_name}</p>
+                    <p>{drugInfo.results[0].products[0].brand_name}</p> */}
 
                 </div>
             ) : (
