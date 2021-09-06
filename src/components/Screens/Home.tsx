@@ -31,6 +31,24 @@ function Home() {
             });
     }
 
+    function savePrescription() {
+        const effectsArray = drugInfo.results[0].patient.reaction.map((item: any, i: number) => (
+            item.reactionmeddrapt
+        ));
+        const sideEffects = effectsArray.join(", ");
+        console.log(sideEffects);
+
+        console.log(drugName.toUpperCase());
+
+        const prescription = {
+            prescriptionName: drugName.toUpperCase(),
+            sideEffects: sideEffects
+        }
+
+        axios.post(`http://localhost:5000/api/prescriptions`, prescription);
+        alert(`Prescription saved`);
+    }
+
     return (
         <div>
             <nav className="navbar navbar-light bg-light">
@@ -43,13 +61,21 @@ function Home() {
             
             {drugInfo ? (
                 <div>
-                    <h2>Drug Name: {drugName}</h2>
-                    <p>Side Effects</p>
-                    <ul>
-                        { drugInfo.results[0].patient.reaction.map((item:any, i:number) => (
-                            <li key={i}> {item.reactionmeddrapt} </li>
-                        ))}
-                    </ul>
+                    <div className="card" style={{width: "18rem"}}>
+                        <div className ="card-body">
+                            <h5 className="card-title">Drug Name: {drugName}</h5>
+                            <h6>Side Effects</h6>
+                            <p className ="card-text">
+                                <ul>
+                                    {drugInfo.results[0].patient.reaction.map((item: any, i: number) => (
+                                        <li key={i}> {item.reactionmeddrapt} </li>
+                                    ))}
+                                </ul>
+                            </p>
+                            <a href="#" onClick={savePrescription} className ="btn btn-primary">Save</a>
+                        </div>
+                    </div>
+
                     {/* <p>{drugInfo.results[0].patient.reaction}</p>
                     <p>{drugInfo.results[0].products[0].dosage_form}</p>
                     <p>{drugInfo.results[0].products[0].brand_name}</p> */}
