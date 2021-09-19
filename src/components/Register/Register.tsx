@@ -16,20 +16,21 @@ const Register = () => {
 
     async function register() {
         console.log("register button!");
-        const { confirmPassword, ...users } = values;
+        
         console.log(values);
 
-        await axios
-            .post(`${ROOT_URL}api/v1/sign_up`, users)
+        return await axios
+            .post(`${ROOT_URL}api/v1/sign_up`, { "user": values })
             .then((response) => {
                 localStorage.setItem("token", response.headers["x-auth-token"]);
+                console.log(response);
                 userHasAuthenticated(true);
-                setLoggedInUser(response.data);
+                setLoggedInUser(response);
                 history.push("/home");
             })
             .catch((error) => {
                 console.log(error);
-                console.log(error.response.data);
+                console.log(error.response);
             });
     }
 
@@ -37,16 +38,6 @@ const Register = () => {
         <div className="container form-group">
             <h1 className="form-title">Registration</h1>
             <form onSubmit={handleSubmit}>
-                <label>Username</label>
-                <input
-                    value={values.userName || ""}
-                    onChange={handleChange}
-                    name="userName"
-                    type="text"
-                    id="userName"
-                    required={true}
-                    className="form-control"
-                />
                 <label>Email</label>
                 <input
                     value={values.email || ""}
