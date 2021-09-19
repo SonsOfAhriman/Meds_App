@@ -1,5 +1,6 @@
 import './Home.css';
 import axios from "axios";
+import {MenuItems} from "./MenuItems";
 
 import React, { useState, useEffect } from 'react';
 
@@ -51,14 +52,29 @@ function Home() {
 
     return (
         <div>
-            <nav className="navbar navbar-light bg-light">
-                <a className="navbar-brand">Navbar</a>
-                <form onSubmit={handleSubmit} className="form-inline">
-                    <input className="form-control mr-sm-2" type="search" onChange={(e) => { setValue(e.target.value)} } placeholder="Search" aria-label="Search" />
-                    <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                </form>
+            <nav className="NavbarItems">
+                <h1 className="navbar-logo">React<i className="fab fa-react"></i></h1>
+                <div className="menu-icon">
+
+                </div>
+                <ul>
+                    {MenuItems.map((item, index) => {
+                        return (
+                            <li key={index}>
+                                <a className={item.cName} href={item.url}>
+                                    {item.title}
+                                </a>
+                            </li>
+                        )
+                    })}
+                </ul>
             </nav>
             
+            <form onSubmit={handleSubmit} className="form-inline">
+                <input className="form-control mr-sm-2" type="search" onChange={(e) => { setValue(e.target.value) }} placeholder="Search" aria-label="Search" />
+                <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+
             {drugInfo ? (
                 <div>
                     <div className="card" style={{width: "18rem"}}>
