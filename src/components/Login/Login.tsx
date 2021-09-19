@@ -12,11 +12,13 @@ const Login = () => {
     const { setJwt, userHasAuthenticated } = useAppContext();
     const history = useHistory();
 
-    //After login, take the user to home page and set token valeu in isAuthenticated variable from localStorage
+    //After login, take the user to home page and set token value in isAuthenticated variable from localStorage
     async function login() {
         await axios
-            .post(`${ROOT_URL}api/v1/sign_in`, values)
+            .post(`${ROOT_URL}api/v1/sign_in`, { "user": values })
             .then((response) => {
+                console.log(response);
+                console.log(values);
                 localStorage.setItem("token", response.data);
                 userHasAuthenticated(true);
                 setJwt(localStorage.getItem("token"));
