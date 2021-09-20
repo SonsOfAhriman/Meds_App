@@ -1,14 +1,17 @@
 import './Home.css';
 import axios from "axios";
 import {MenuItems} from "./MenuItems";
+import { Button } from "./Button";
 
 import React, { useState, useEffect } from 'react';
 
 function Home() {
 
+    const [ clicked, setClicked ] = useState(false);
+
     const [ value, setValue ] = useState("");
     const [ searchTerm, setSearchTerm ] = useState("");
-    const [drugName, setDrugName] = useState(null);
+    const [ drugName, setDrugName ] = useState(null);
 
     const [ drugInfo, setDrugInfo ] = useState(null);
 
@@ -20,7 +23,7 @@ function Home() {
         console.log(drugInfo);
     }
 
-    async function grabPres(drug:string) {
+    const grabPres = async(drug: string) => {
         await axios
             .get(`https://api.fda.gov/drug/event.json?search=patient.drug.openfda.brand_name:${drug}&limit=1`)
             
@@ -32,7 +35,11 @@ function Home() {
             });
     }
 
-    function savePrescription() {
+    const handleClick = () => {
+        setClicked(!clicked);
+    }
+
+    const savePrescription = () => {
         const effectsArray = drugInfo.results[0].patient.reaction.map((item: any, i: number) => (
             item.reactionmeddrapt
         ));
@@ -53,11 +60,11 @@ function Home() {
     return (
         <div>
             <nav className="NavbarItems">
-                <h1 className="navbar-logo">React<i className="fab fa-react"></i></h1>
-                <div className="menu-icon">
-
+                <h1 className="navbar-logo">Medical App<i className="fab fa-react"></i></h1>
+                <div className="menu-icon" onClick={handleClick} >
+                    <i className={clicked ? "fas fa-times" : "fas fa-bars"} ></i>
                 </div>
-                <ul>
+                <ul className={clicked ? "nav-menu active" : "nav-menu"} >
                     {MenuItems.map((item, index) => {
                         return (
                             <li key={index}>
@@ -68,6 +75,10 @@ function Home() {
                         )
                     })}
                 </ul>
+                <div className="button-class">
+                    <Button buttonSize={""} buttonStyle={""} />
+                </div>
+                
             </nav>
             
             <form onSubmit={handleSubmit} className="form-inline">
