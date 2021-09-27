@@ -12,18 +12,15 @@ const Register = () => {
     const { userHasAuthenticated, setLoggedInUser } = useAppContext();
     const history = useHistory();
 
-    console.log(ROOT_URL);
 
     async function register() {
-        console.log("register button!");
         
-        console.log(values);
 
         return await axios
             .post(`${ROOT_URL}api/v1/sign_up`, { "user": values })
             .then((response) => {
-                localStorage.setItem("token", response.headers["x-auth-token"]);
-                console.log(response);
+                localStorage.setItem("token", response.data.data.user.authentication_token);
+                console.log(response.data.data.user.authentication_token);
                 userHasAuthenticated(true);
                 setLoggedInUser(response);
                 history.push("/home");
