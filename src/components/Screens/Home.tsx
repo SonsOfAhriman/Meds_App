@@ -2,11 +2,16 @@ import './Home.css';
 import axios from "axios";
 import {MenuItems} from "./MenuItems";
 import { Button } from "./Button";
+import { ROOT_URL } from "../../apiRoot";
+import { useAppContext } from "../../libs/contextLib";
+
+
 
 import React, { useState, useEffect } from 'react';
 
 function Home() {
 
+    const { loggedInUser, setLoggedInUser } = useAppContext();
     const [ clicked, setClicked ] = useState(false);
 
     const [ value, setValue ] = useState("");
@@ -20,7 +25,6 @@ function Home() {
         setSearchTerm(value);
         setDrugName(searchTerm);
         grabPres(searchTerm);
-        console.log(drugInfo);
     }
 
     const grabPres = async(drug: string) => {
@@ -30,7 +34,6 @@ function Home() {
 
             .then((response) => {
                 setDrugInfo(response.data);
-                console.log(drugInfo);
                 return response;
             });
     }
@@ -44,23 +47,34 @@ function Home() {
             item.reactionmeddrapt
         ));
         const sideEffects = effectsArray.join(", ");
-        console.log(sideEffects);
 
-        console.log(drugName.toUpperCase());
+       
+        console.log(localStorage.token);
 
-        const prescription = {
-            prescriptionName: drugName.toUpperCase(),
-            sideEffects: sideEffects
+        const token = localStorage.getItem('token') // Replace token with the right key
+        if (!token) {
+            return console.log("no token");
         }
 
-        axios.post(`http://localhost:5000/api/prescriptions`, prescription);
+        const prescription = {
+            "prescription_name": drugName.toUpperCase(),
+            "side_effects": sideEffects
+        }
+
+        var headers = {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`,
+        }
+ 
+        axios.post(`${ROOT_URL}api/v1/prescriptions`, { "prescription": prescription }, { headers: headers });
         alert(`Prescription saved`);
     }
 
     return (
         <div>
             <nav className="NavbarItems">
-                <h1 className="navbar-logo">Medical App<i className="fab fa-react"></i></h1>
+                <h1 className="navbar-logo">Medi App</h1>
                 <div className="menu-icon" onClick={handleClick} >
                     <i className={clicked ? "fas fa-times" : "fas fa-bars"} ></i>
                 </div>
