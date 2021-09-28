@@ -20,9 +20,10 @@ const Register = () => {
             .post(`${ROOT_URL}api/v1/sign_up`, { "user": values })
             .then((response) => {
                 localStorage.setItem("token", response.data.data.user.authentication_token);
-                console.log(response.data.data.user.authentication_token);
+                let parsedUser = JSON.parse(response.config.data);
+                console.log(parsedUser);
                 userHasAuthenticated(true);
-                setLoggedInUser(response);
+                setLoggedInUser(parsedUser);
                 history.push("/home");
             })
             .catch((error) => {

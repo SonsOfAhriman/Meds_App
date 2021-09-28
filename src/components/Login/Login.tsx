@@ -9,7 +9,7 @@ import "./Login.css";
 
 const Login = () => {
     const { values, handleChange, handleSubmit } = UseForm(login);
-    const { setJwt, userHasAuthenticated } = useAppContext();
+    const { setJwt, userHasAuthenticated, setLoggedInUser} = useAppContext();
     const history = useHistory();
 
     //After login, take the user to home page and set token value in isAuthenticated variable from localStorage
@@ -17,9 +17,12 @@ const Login = () => {
         await axios
             .post(`${ROOT_URL}api/v1/sign_in`, { "user": values })
             .then((response) => {
-                console.log(response);
-                console.log(values);
-                localStorage.setItem("token", response.data);
+                
+                localStorage.setItem("token", response.data.data.user.authentication_token);
+                let parsedUser = JSON.parse(response.config.data);
+                console.log(localStorage.getItem("token"));
+                setLoggedInUser(parsedUser);
+                console.log(parsedUser);
                 userHasAuthenticated(true);
                 setJwt(localStorage.getItem("token"));
                 history.push("/home");

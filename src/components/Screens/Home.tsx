@@ -49,12 +49,17 @@ function Home() {
         const sideEffects = effectsArray.join(", ");
 
        
-        console.log(localStorage.token);
+        console.log(loggedInUser);
 
         const token = localStorage.getItem('token') // Replace token with the right key
         if (!token) {
             return console.log("no token");
         }
+
+        console.log(token);
+
+        console.log(loggedInUser.user.email);
+
 
         const prescription = {
             "prescription_name": drugName.toUpperCase(),
@@ -63,8 +68,8 @@ function Home() {
 
         var headers = {
             'Content-Type': 'application/json',
-            Accept: 'application/json',
-            Authorization: `Bearer ${token}`,
+            "X-User-Email": loggedInUser.user.email,
+            "X-User-Token": token
         }
  
         axios.post(`${ROOT_URL}api/v1/prescriptions`, { "prescription": prescription }, { headers: headers });
