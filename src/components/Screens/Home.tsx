@@ -11,6 +11,10 @@ import React, { useState, useEffect } from 'react';
 
 function Home() {
 
+    const logIn = [ "Log In", "/login"];
+    const logOut = [ "Log Out", "#", "logout"];
+    const signUp = [ "Sign Up", "/signup"];
+
     const { loggedInUser, setLoggedInUser } = useAppContext();
     const [ clicked, setClicked ] = useState(false);
 
@@ -25,6 +29,11 @@ function Home() {
         setSearchTerm(value);
         setDrugName(searchTerm);
         grabPres(searchTerm);
+    }
+
+    const logout = () => {
+        localStorage.clear();
+        window.location.href = '/';
     }
 
     const grabPres = async(drug: string) => {
@@ -91,12 +100,49 @@ function Home() {
                                     {item.title}
                                 </a>
                             </li>
+
+
                         )
                     })}
+                    {loggedInUser ?
+                        <li>
+                            <a className={"nav-links-mobile"} onClick={logout}>
+                                Log Out
+                            </a>
+                        </li>
+                        :
+                        <div>
+                            <li>
+                                <a className={"nav-links-mobile"} href="/login">
+                                    Log In
+                                </a>
+                            </li>
+                            <li>
+                                <a className={"nav-links-mobile"} href="/signup">
+                                    Sign Up
+                                </a>
+                            </li>
+                        </div>
+
+                        
+                    }
+                    { loggedInUser ? 
+                        <div className="button-class">
+                            <Button buttonSize={""} buttonStyle={""} props={logOut} />
+                        </div>
+                        
+                    :
+                        <div className="flex">
+                            <div className="button-class right">
+                                <Button buttonSize={""} buttonStyle={""} props={logIn} />
+                            </div>
+                            <div className="button-class">
+                                <Button buttonSize={""} buttonStyle={""} props={signUp} />
+                            </div>
+                        </div>
+                    }
                 </ul>
-                <div className="button-class">
-                    <Button buttonSize={""} buttonStyle={""} />
-                </div>
+
                 
             </nav>
             

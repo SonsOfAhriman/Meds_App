@@ -11,16 +11,24 @@ const SIZES = [
     "btn--large"
 ]
 
+
+
 export const Button = ({
     buttonStyle,
-    buttonSize
+    buttonSize,
+    props
 }) => {
     const checkButtonStyle = STYLES.includes(buttonStyle) ? buttonStyle : STYLES[0];
     const checkButtonSize = SIZES.includes(buttonSize) ? buttonSize : SIZES[0];
 
+    const logout = () => {
+        localStorage.clear();
+        window.location.href = '/';
+    }
+
     return(
-        <button className={`btn ${checkButtonStyle} ${checkButtonSize}`}>
-            Sign Up
-        </button>
+        <a className={`btn ${checkButtonStyle} ${checkButtonSize}`} href={props[1]} onClick={eval(props[2])} >
+            {props[0]}
+        </a>
     )
 }

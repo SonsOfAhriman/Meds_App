@@ -73,6 +73,14 @@ color: #004d40;
     display: none;
 }
 
+.flex {
+    display: flex;
+}
+
+.right {
+    margin-right: 8px;
+}
+
 @media screen and (max-width: 960px) {
     .NavbarItems {
         position: relative;
