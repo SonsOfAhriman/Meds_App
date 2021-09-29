@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import { Switch, Route } from 'react-router-dom';
 import Home from './Screens/Home';
+import Navbar from './Screens/Navbar';
 import Profile from './Profile/Profile';
 import Register from "./Register/Register";
 import Login from "./Login/Login";
@@ -63,6 +64,7 @@ function App() {
             headers,
             setHeaders,
           }}>
+          <Navbar />
           <Switch>
             <PrivateRoute exact path="/" component={Home} />
             <Route path="/home" component={Home} />
