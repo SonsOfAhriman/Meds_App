@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import { Switch, Route } from 'react-router-dom';
 import Home from './Screens/Home';
+import Profile from './Profile/Profile';
 import Register from "./Register/Register";
 import Login from "./Login/Login";
 import { AppContext } from "../libs/contextLib";
@@ -65,6 +66,7 @@ function App() {
           <Switch>
             <PrivateRoute exact path="/" component={Home} />
             <Route path="/home" component={Home} />
+            <Route path="/profile" component={Profile} />
             <Route path="/register" component={Register} />
             <Route path="/login" component={Login} />
   
