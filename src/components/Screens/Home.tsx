@@ -1,6 +1,5 @@
 import './Home.css';
 import axios from "axios";
-import {MenuItems} from "./MenuItems";
 import { Button } from "./Button";
 import { ROOT_URL } from "../../apiRoot";
 import { useAppContext } from "../../libs/contextLib";
@@ -11,12 +10,7 @@ import React, { useState, useEffect } from 'react';
 
 function Home() {
 
-    const logIn = [ "Log In", "/login"];
-    const logOut = [ "Log Out", "#", "logout"];
-    const signUp = [ "Sign Up", "/signup"];
-
     const { loggedInUser, setLoggedInUser } = useAppContext();
-    const [ clicked, setClicked ] = useState(false);
 
     const [ value, setValue ] = useState("");
     const [ searchTerm, setSearchTerm ] = useState("");
@@ -47,9 +41,7 @@ function Home() {
             });
     }
 
-    const handleClick = () => {
-        setClicked(!clicked);
-    }
+
 
     const savePrescription = () => {
         const effectsArray = drugInfo.results[0].patient.reaction.map((item: any, i: number) => (
@@ -87,64 +79,7 @@ function Home() {
 
     return (
         <div>
-            <nav className="NavbarItems">
-                <h1 className="navbar-logo">Medi App</h1>
-                <div className="menu-icon" onClick={handleClick} >
-                    <i className={clicked ? "fas fa-times" : "fas fa-bars"} ></i>
-                </div>
-                <ul className={clicked ? "nav-menu active" : "nav-menu"} >
-                    {MenuItems.map((item, index) => {
-                        return (
-                            <li key={index}>
-                                <a className={item.cName} href={item.url}>
-                                    {item.title}
-                                </a>
-                            </li>
-
-
-                        )
-                    })}
-                    {loggedInUser ?
-                        <li>
-                            <a className={"nav-links-mobile"} onClick={logout}>
-                                Log Out
-                            </a>
-                        </li>
-                        :
-                        <div>
-                            <li>
-                                <a className={"nav-links-mobile"} href="/login">
-                                    Log In
-                                </a>
-                            </li>
-                            <li>
-                                <a className={"nav-links-mobile"} href="/signup">
-                                    Sign Up
-                                </a>
-                            </li>
-                        </div>
-
-                        
-                    }
-                    { loggedInUser ? 
-                        <div className="button-class">
-                            <Button buttonSize={""} buttonStyle={""} props={logOut} />
-                        </div>
-                        
-                    :
-                        <div className="flex">
-                            <div className="button-class right">
-                                <Button buttonSize={""} buttonStyle={""} props={logIn} />
-                            </div>
-                            <div className="button-class">
-                                <Button buttonSize={""} buttonStyle={""} props={signUp} />
-                            </div>
-                        </div>
-                    }
-                </ul>
-
-                
-            </nav>
+          
             
             <form onSubmit={handleSubmit} className="form-inline">
                 <input className="form-control mr-sm-2" type="search" onChange={(e) => { setValue(e.target.value) }} placeholder="Search" aria-label="Search" />
