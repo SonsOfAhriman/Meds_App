@@ -23,6 +23,8 @@ const Login = () => {
                 console.log(localStorage.getItem("token"));
                 setLoggedInUser(parsedUser);
                 console.log(parsedUser);
+                localStorage.setItem('email', parsedUser.user.email)
+                localStorage.setItem('password', parsedUser.user.password)
                 userHasAuthenticated(true);
                 setJwt(localStorage.getItem("token"));
                 history.push("/home");

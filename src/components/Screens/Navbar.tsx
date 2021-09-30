@@ -10,6 +10,8 @@ import { Button } from "./Button";
 function Navbar() {
 
     const [clicked, setClicked] = useState(false);
+    const { isAuthenticated, userHasAuthenticated } = useAppContext();
+
 
     const logIn = ["Log In", "/login"];
     const logOut = ["Log Out", "#", "logout"];
@@ -45,7 +47,7 @@ function Navbar() {
 
                         )
                     })}
-                    {loggedInUser ?
+                    {loggedInUser && userHasAuthenticated ?
                         <li>
                             <a className={"nav-links-mobile"} onClick={logout}>
                                 Log Out
@@ -59,7 +61,7 @@ function Navbar() {
                                 </a>
                             </li>
                             <li>
-                                <a className={"nav-links-mobile"} href="/signup">
+                                <a className={"nav-links-mobile"} href="/register">
                                     Sign Up
                                 </a>
                             </li>
@@ -67,7 +69,7 @@ function Navbar() {
 
 
                     }
-                    {loggedInUser ?
+                    {loggedInUser && userHasAuthenticated ?
                         <div className="button-class">
                             <Button buttonSize={""} buttonStyle={""} props={logOut} />
                         </div>

@@ -1,6 +1,5 @@
 import './Home.css';
 import axios from "axios";
-import { Button } from "./Button";
 import { ROOT_URL } from "../../apiRoot";
 import { useAppContext } from "../../libs/contextLib";
 
@@ -25,10 +24,7 @@ function Home() {
         grabPres(searchTerm);
     }
 
-    const logout = () => {
-        localStorage.clear();
-        window.location.href = '/';
-    }
+
 
     const grabPres = async(drug: string) => {
         await axios

@@ -7,51 +7,54 @@ import Navbar from './Screens/Navbar';
 import Profile from './Profile/Profile';
 import Register from "./Register/Register";
 import Login from "./Login/Login";
-import { AppContext } from "../libs/contextLib";
+import { AppContext, useAppContext } from "../libs/contextLib";
 import jwtDecode from "jwt-decode";
 import PrivateRoute from './Routing/PrivateRoute';
+import axios from "axios";
+import { ROOT_URL } from "../apiRoot";
+import UseForm from "./UseForm/UseForm";
+
+
+
 
 function App() {
-  const [ loggedInUser, setLoggedInUser ] = useState();
-  const [jwt, setJwt] = useState(() => localStorage.getItem("token"));
+  const [loggedInUser, setLoggedInUser] = useState();
+  const [jwt, setJwt] = useState(() => localStorage.getItem('token'));
   const [currentlyAuthenticating, setCurrentlyAuthenticating] = useState(true);
   const [isAuthenticated, userHasAuthenticated] = useState(false);
   const [headers, setHeaders] = useState<Object>({});
 
-  useEffect(() => {
-    onLoad();
-  }, []);
+  console.log(localStorage);
 
+ 
   useEffect(() => {
-    if (jwt !== null) {
-      try {
-        setLoggedInUser(jwtDecode(jwt));
-      } catch (error) {
-        console.log(error);
-      }
+    if (localStorage.getItem('token')) {
+      login();
     }
-    setHeaders({
-      headers: {
-        "Content-Type": "application/json",
-        "x-auth-token": `${jwt}`,
-      },
-    });
-  }, [jwt]);
+  }, []); 
 
-  async function onLoad() {
-    if (jwt != null) {
-      try {
-        await setLoggedInUser(jwtDecode(jwt));
+  async function login() {
+    await axios
+      .post(`${ROOT_URL}api/v1/sign_in`, { "user": { "email": localStorage.getItem("email"), "password": localStorage.getItem("password") }})
+      .then((response) => {
+
+        localStorage.setItem("token", response.data.data.user.authentication_token);
+        let parsedUser = JSON.parse(response.config.data);
+        setLoggedInUser(parsedUser);
+        localStorage.setItem('email', parsedUser.user.email)
+        localStorage.setItem('password', parsedUser.user.password)
         userHasAuthenticated(true);
-      } catch (error) {
-        if (error !== "InvalidTokenError: Invalid token specified") {};
-      }
-    }
-    setCurrentlyAuthenticating(false);
+        setJwt(localStorage.getItem("token"));
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error.response.data);
+      });
   }
 
+
   return (
-    !currentlyAuthenticating && (
+    (
       <div>
         <AppContext.Provider
           value={{
