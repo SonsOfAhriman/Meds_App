@@ -24,7 +24,7 @@ function App() {
   const [isAuthenticated, userHasAuthenticated] = useState(false);
   const [headers, setHeaders] = useState<Object>({});
 
-  console.log(localStorage);
+  // console.log(localStorage);
 
  
   useEffect(() => {

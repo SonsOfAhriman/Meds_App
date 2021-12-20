@@ -69,7 +69,7 @@ function Home() {
             "X-User-Token": token
         }
  
-        axios.post(`${ROOT_URL}api/v1/prescriptions`, { "prescription": prescription }, { headers: headers });
+        axios.post(`${ROOT_URL}api/v1/prescription`, { "prescription": prescription }, { headers: headers });
         alert(`Prescription saved`);
     }
 
