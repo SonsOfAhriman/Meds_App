@@ -16,6 +16,7 @@ function Profile() {
 
        axios.get(`${ROOT_URL}api/v1/users`, { params: { email: loggedInUser.user.email } })
             .then(resp => {
+
                 setUserId(resp.data.find(element => element.email === loggedInUser.user.email).id);
             })
             .then(resp => {
@@ -24,10 +25,14 @@ function Profile() {
     }
 
     const getPrescriptions = () => {
-        axios.get(`${ROOT_URL}api/v1/users/${userId}`)
-            .then(resp => {
-                setPrescriptions(resp.data);
-            })
+        if (userId.length !== 0) {
+            axios.get(`${ROOT_URL}api/v1/users/${userId}`)
+                .then(resp => {
+                    // console.log(resp);
+                    setPrescriptions(Object.values(resp.data));
+                })
+        }
+
     }
 
 
@@ -38,9 +43,17 @@ function Profile() {
                     <div>Hello {loggedInUser.user.email} </div>
                     <a href="#" onClick={getUserId} className="btn btn-primary">See Prescriptions</a>
 
+                    { prescriptions[0] ?
+                        <ul>
+                            { prescriptions[0].map((item, index) => (
+                            <li>prescription name: { item.prescription_name } | side effects: { item.side_effects })</li>
+                            ))}
+                        </ul>
                     
-                    {console.log(typeof prescriptions)}
-
+                        :
+                        ""
+                    }
+{/* 
                  { prescriptions.length > 0 ? 
                    
                     <ul>
@@ -50,7 +63,7 @@ function Profile() {
                     </ul>
                     :
                     ""
-                }
+                } */}
  
                 </div>
             : 
