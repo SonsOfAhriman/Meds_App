@@ -40,13 +40,13 @@ function Profile() {
         <div>
             { loggedInUser ?
                 <div> 
-                    <div>Hello {loggedInUser.user.email} </div>
-                    <a href="#" onClick={getUserId} className="btn btn-primary">See Prescriptions</a>
+                    <h2 className="m-1"><span className="badge badge-secondary text-secondary">Hello {loggedInUser.user.email} </span> </h2>
+                    <a href="#" onClick={getUserId} className="btn btn-primary m-2">See Prescriptions</a>
 
                     { prescriptions[0] ?
-                        <ul>
+                        <ul className="list-group list-group-action m-2">
                             { prescriptions[0].map((item, index) => (
-                            <li>prescription name: { item.prescription_name } | side effects: { item.side_effects })</li>
+                                <li className="list-group-item list-group-item-action list-group-item-dark" > <b>Prescription name:</b> {item.prescription_name} <b>|</b> <b>Side effects:</b> { item.side_effects })</li>
                             ))}
                         </ul>
                     
