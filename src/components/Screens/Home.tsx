@@ -76,7 +76,7 @@ function Home() {
     return (
         <div>
           
-            <h2 className="m-1"><span className="badge badge-secondary text-secondary">Search for Prescriptions & relevant side effects</span> </h2>
+            <h2 className="m-1 container"><span className="badge badge-secondary text-secondary">Search for Prescriptions</span> </h2>
 
             <form onSubmit={handleSubmit} className="m-2 form-inline">
                 <input className="form-control mr-sm-2" type="search" onChange={(e) => { setValue(e.target.value) }} placeholder="Search" aria-label="Search" />
